@@ -1,2 +1,5 @@
+from src.version import version
+
+
 def test_number_addition():
-    assert 1 + 2 == 3
+    assert version == "0.1.0"

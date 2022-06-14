@@ -37,7 +37,7 @@ pip install -r requirements.txt
 To start the app, simply run the following in the root of this project:
 
 ```shell
-python app
+python -m src
 ```
 
 
