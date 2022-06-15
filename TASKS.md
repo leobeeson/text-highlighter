@@ -5,11 +5,11 @@ For your assignment we'd like you to read and understand the code for this small
 What we will be looking for in your submission:
 - Clean code, descriptive function and variable names, use of PEP 484 type hints where possible, well-structured code
 - Comprehensive suite of unit tests for the entire submission
-- Clear signs of use of TDD in your work. The best way to show this is by first writing test(s), committing them, then writing implementation that matches these tests. You can use rebase to clean up you commits before sending us the submission.
+- Clear signs of use of TDD in your work. The best way to show this is by first writing test(s), committing them, then writing implementation that matches these tests. You can use rebase to clean up your commits before sending us the submission.
 - All the unit tests must be passing
 
 What we WON'T be looking for in your submission:
-- Code written in the most optimal way possible - We don't think that LeetCode-style interviews represent a real-world working conditions]
+- Code written in the most optimal way possible - We don't think that LeetCode-style interviews represent a real-world working conditions
 - Finishing the test in a given amount of time. *This is not a race, so take as much time as you need.*
 
 # Getting started
