@@ -16,6 +16,9 @@ One way to work around this is by adding a lowercase in `src/text_processing/hig
 The tests in `tests/text_processing/test_highlight_text` are missing any tests for multiple words, and large blocks of highlighted words.
 Depending on how the candidate approaches the previous task, they could add tests ensuring that the words list works with uppercase and lowercase words.
 
+The task to fix `src/text_processing/remove_emojis` can be fixed in two ways:
+- The lazy way is to simply adjust the end index in that slice operation on line 7
+- A better way is to use a `replace()` function from string, as that simplifies the code too
 
 ## Optional tasks
 
