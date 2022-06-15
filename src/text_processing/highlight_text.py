@@ -54,22 +54,7 @@ def _create_word_highlighter(lowercase_words_to_highlight: list[str]) -> Callabl
 
 def _highlight_words(words: list[str], lowercase_words_to_highlight: list[str]) -> list[TextFragmentWithHighlights]:
     # TODO: To be implemented by the candidate
-    # Reference implementation
-    fragments = []
-    current_fragment = TextFragmentWithHighlights('', is_highlighted=False)
-    for word in words:
-        is_highlighted = word in lowercase_words_to_highlight
-        if current_fragment.is_highlighted != is_highlighted:
-            if current_fragment.text != '':
-                fragments.append(current_fragment)
-            current_fragment = TextFragmentWithHighlights('', is_highlighted=is_highlighted)
-        if current_fragment.text == '':
-            current_fragment.text = word
-        else:
-            current_fragment.text += f" {word}"
-    if current_fragment.text != '':
-        fragments.append(current_fragment)
-    return fragments
+    raise 'Not implemented!'
 
 
 def _tokenise_text(text: str) -> list[str]:
