@@ -48,3 +48,9 @@ To start the tests, simply run the following in the root of this project:
 ```shell
 pytest
 ```
+
+The tests can also be run in a continuous mode:
+
+```shell
+ptw
+```

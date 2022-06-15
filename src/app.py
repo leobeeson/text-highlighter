@@ -1,12 +1,5 @@
 from fastapi import FastAPI
-from .version import version
+from .routes import router
 
 app = FastAPI()
-
-
-@app.get("/")
-async def status():
-    return {
-        "ok": True,
-        "version": version
-    }
+app.include_router(router)
