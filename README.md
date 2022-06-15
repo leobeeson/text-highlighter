@@ -54,3 +54,7 @@ The tests can also be run in a continuous mode:
 ```shell
 ptw
 ```
+
+# Interview tasks
+
+Once you have the project working, please open the [TASKS.md](TASKS.md) file to see what you have to do as part of your interview.
