@@ -10,7 +10,7 @@
 
 In order for the project to run, you'll need to configure a virtual environment.
 This process is automated thanks to the [Direnv](https://direnv.net/).
-The only think you have to do to create an environment is to run the following in the root of your project:
+The only thing you have to do to create an environment is to run the following in the root of your project:
 
 ```shell
 direnv allow
