@@ -43,4 +43,7 @@ Your imaginary colleague was kind enough to write one example test for it that t
 
 Currently, this Web API is versioned as `0.1.0`. Please update the version of the API to `0.2.0`.
 
+# Task 5
 
+Your imaginary colleague tried to take a stab at implementing the `src/text_processing/remove_emojis` function, but after adding the test, the colleague realised that his implementation is broken.
+Please fix the implementation so that all tests for that function pass.
