@@ -54,11 +54,15 @@ def _create_word_highlighter(lowercase_words_to_highlight: list[str]) -> Callabl
 
 def _highlight_words(words: list[str], lowercase_words_to_highlight: list[str]) -> list[TextFragmentWithHighlights]:
     fragments = []
-    for word in words:
-        if word.lower() in lowercase_words_to_highlight:
-            fragment = TextFragmentWithHighlights(text=word, is_highlighted=True)
-        else:
-            fragment = TextFragmentWithHighlights(text=word, is_highlighted=False)
+    if len(lowercase_words_to_highlight) > 0:
+        for word in words:
+            if word.lower() in lowercase_words_to_highlight:
+                fragment = TextFragmentWithHighlights(text=word, is_highlighted=True)
+            else:
+                fragment = TextFragmentWithHighlights(text=word, is_highlighted=False)
+            fragments.append(fragment)
+    else:
+        fragment = TextFragmentWithHighlights(text=" ".join(words), is_highlighted=False)
         fragments.append(fragment)
     return fragments
 
