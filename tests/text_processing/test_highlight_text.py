@@ -55,3 +55,13 @@ def test_clean_message_with_word_to_highlight_in_upper_case():
     assert result == TextWithHighlights([
         TextFragmentWithHighlights("This message has multiple spaces between words.", is_highlighted=False),
     ])
+
+
+def test_highlightable_message_with_word_to_highlight_in_upper_case():
+    message = "This message has   multiple  spaces between  words. Hello World!"
+    result = highlight_text(message, ["HELLO"])
+    assert result == TextWithHighlights([
+        TextFragmentWithHighlights("This message has multiple spaces between words.", is_highlighted=False),
+        TextFragmentWithHighlights("Hello", is_highlighted=True),
+        TextFragmentWithHighlights("World!", is_highlighted=False),
+    ])
