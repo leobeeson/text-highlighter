@@ -56,11 +56,37 @@ def _highlight_words(words: list[str], lowercase_words_to_highlight: list[str]) 
     fragments = []
     if len(words) > 0:
         if len(lowercase_words_to_highlight) > 0:
+            fragment_builder = ""
+            is_fragment_highlighted = None
             for word in words:
                 if word.lower() in lowercase_words_to_highlight:
-                    fragment = TextFragmentWithHighlights(text=word, is_highlighted=True)
-                else:
-                    fragment = TextFragmentWithHighlights(text=word, is_highlighted=False)
+                    if len(fragment_builder) == 0:
+                        is_fragment_highlighted = True
+                        fragment_builder = word
+                        continue
+                    if is_fragment_highlighted:
+                        fragment_builder = f"{fragment_builder} {word}"
+                        continue
+                    if not is_fragment_highlighted:
+                        fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=False)
+                        fragments.append(fragment)
+                        is_fragment_highlighted = True
+                        fragment_builder = word
+                if word.lower() not in lowercase_words_to_highlight:
+                    if len(fragment_builder) == 0:
+                        is_fragment_highlighted = False
+                        fragment_builder = word
+                        continue
+                    if not is_fragment_highlighted:
+                        fragment_builder = f"{fragment_builder} {word}"
+                        continue
+                    if is_fragment_highlighted:
+                        fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=True)
+                        fragments.append(fragment)
+                        is_fragment_highlighted = False
+                        fragment_builder = word
+            if len(fragment_builder) > 0:
+                fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=is_fragment_highlighted)
                 fragments.append(fragment)
         else:
             fragment = TextFragmentWithHighlights(text=" ".join(words), is_highlighted=False)
