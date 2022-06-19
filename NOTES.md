@@ -1,6 +1,44 @@
+# Project Management Notes
+
+## Business Logic Requirements
+
+### `/message/highlight`
+* Endpoint `/highlight` highlights all provided words in a given text.
+* Endpoint `/highlight` removes banned emojis in a given text.
 
 
+### Doubts:
+* What could go wrong with the `/message/highlight` enpoint?
+    * What kind of mistakes might the user/client do interacting with the endpoint?
+    * What scenarios could cause the arguments passed by the user/client to make the endpoint fail? 
+    * What kind of errors can we foresee?
 
+
+***
+
+
+## WBS:
+* Implement `src/text_processing/highlight_text.py._highlight_words()` function. #TODO_1
+    * The `src.text_processing._highlight_words()` function cleans the text from any duplicated spaces, e.g. `Hello   world` becomes `Hello world`.
+* Make all existing tests for `src.text_processing.highlight_text()` pass. #TODO_1
+    * Test suite at `tests/text_processing/test_highlight_text.py`.
+* Add tests to `tests/text_processing/test_highlight_text.py` that test other potential use-cases of the `highlight_text()` function. #TODO_2
+* Add a suite of tests for the FastAPI route `/message/highlight`. #TODO_3
+    * Add integration tests to `tests/routes/message/test_highlight_message.py`.
+    * Add http exception/error-catching tests.
+* Update the version of the API to `0.2.0`. #TODO_4
+    * The `tests/routes/test_status.py` gets the `version` variable from `src/version.py`.
+    * However, `src/routes/status.py` has the version number hard-coded.
+        * Remove duplication by pointing `src/routes/status.py` to the `version` variable from `src/version.py` (single point of change).
+* Fix the implementation of `src/text_processing/remove_emojis` so that all tests for that function pass. #TODO_5
+    * `tests/text_processing/test_remove_emojis.py` has only one test with parameterised arguments (3x). 
+        * Shall we add some more texts? #DOUBT#TODO_5
+
+
+***
+
+
+# Developer Notes
 
 ## Creating the Virtual Environment
 
