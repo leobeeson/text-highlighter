@@ -164,3 +164,18 @@ def test_timestamp_is_mandatory_field(message):
     )
     assert response.status_code == 422
     assert response.json()["detail"][0]["msg"] == "field required"
+
+
+def test_timestamp_is_datetime_compliant(message):
+    message.update(text="This is a test message to test the message highlighter.")
+    message.update(timestamp="this_is_not_a_date")
+    words_to_highlight = ["HELLO", "world"]
+    response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["msg"] == "invalid datetime format"
