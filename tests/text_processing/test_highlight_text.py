@@ -102,3 +102,14 @@ def test_clean_message_with_all_words_to_highlight_not_present_in_message():
             is_highlighted=False
             )
     ])
+
+
+def test_highlightable_message_with_multiword_term_to_highlight_present_in_message():
+    message = "This is a test message to test the message highlighter. Also, hello world!"
+    result = highlight_text(message, ["message highlighter.", "hello world!"])
+    assert result == TextWithHighlights([
+        TextFragmentWithHighlights("This is a test message to test the", is_highlighted=False),
+        TextFragmentWithHighlights("message highlighter.", is_highlighted=True),
+        TextFragmentWithHighlights("Also,", is_highlighted=False),
+        TextFragmentWithHighlights("hello world!", is_highlighted=True),
+    ])
