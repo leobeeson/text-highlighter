@@ -54,3 +54,41 @@ def test_clean_message_with_empty_words_to_highlight(message):
             }
         ]
     }
+
+
+def test_highlightable_message_with_word_to_highlight(message):
+    message.update(text="This is a test message to test the message highlighter.",)
+    words_to_highlight = ["message"]
+    response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 200
+    assert response.json() == {
+        **message,
+        "fragments": [
+            {
+                "is_highlighted": False,
+                "text": "This is a test"
+            },
+            {
+                "is_highlighted": True,
+                "text": "message"
+            },
+            {
+                "is_highlighted": False,
+                "text": "to test the"
+            },
+            {
+                "is_highlighted": True,
+                "text": "message"
+            },
+            {
+                "is_highlighted": False,
+                "text": "highlighter."
+            }
+        ]
+    }
