@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 from src.app import app
+from src.text_processing.highlight_text import TextFragmentWithHighlights
 
 client = TestClient(app)
 
@@ -25,4 +26,29 @@ def test_empty_message():
         "fragments": [],
     }
 
-# TODO: Add more tests here
+
+def test_clean_message_with_empty_words_to_highlight():
+    message = {
+        "recipient_id": "test-recipient",
+        "sender_id": "test-sender",
+        "text": "This is a test message to test the message highlighter.",
+        "timestamp": "2022-06-15T11:00:00",
+    }
+    words_to_highlight = []
+    response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 200
+    assert response.json() == {
+        **message,
+        "fragments": [
+            {
+                "is_highlighted": False,
+                "text": "This is a test message to test the message highlighter."
+            }
+        ]
+    }
