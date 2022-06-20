@@ -67,7 +67,7 @@ def test_highlightable_message_with_word_to_highlight_in_upper_case():
     ])
 
 
-def test_highlightable_message_with_multiple_words_to_highlight():
+def test_highlightable_message_with_all_words_to_highlight_present_in_message():
     message = "This is a test message to test the message highlighter. Hello World!"
     result = highlight_text(message, ["message", "hello"])
     assert result == TextWithHighlights([
@@ -78,4 +78,27 @@ def test_highlightable_message_with_multiple_words_to_highlight():
         TextFragmentWithHighlights("highlighter.", is_highlighted=False),
         TextFragmentWithHighlights("Hello", is_highlighted=True),
         TextFragmentWithHighlights("World!", is_highlighted=False),
+    ])
+
+
+def test_highlightable_message_with_some_words_to_highlight_present_in_message():
+    message = "This is a test message to test the message highlighter. Hello World!"
+    result = highlight_text(message, ["message", "supercalifragilisticexpialidocious"])
+    assert result == TextWithHighlights([
+        TextFragmentWithHighlights("This is a test", is_highlighted=False),
+        TextFragmentWithHighlights("message", is_highlighted=True),
+        TextFragmentWithHighlights("to test the", is_highlighted=False),
+        TextFragmentWithHighlights("message", is_highlighted=True),
+        TextFragmentWithHighlights("highlighter. Hello World!", is_highlighted=False),
+    ])
+
+
+def test_clean_message_with_all_words_to_highlight_not_present_in_message():
+    message = "This is a test message to test the message highlighter. Hello World!"
+    result = highlight_text(message, ["catchmeifyoucan", "supercalifragilisticexpialidocious"])
+    assert result == TextWithHighlights([
+        TextFragmentWithHighlights(
+            "This is a test message to test the message highlighter. Hello World!", 
+            is_highlighted=False
+            )
     ])
