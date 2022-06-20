@@ -132,8 +132,10 @@ def _add_phrases_to_highlight_to_phrases_model(terms: list[str]) -> None:
     for term in terms:
         if "_" in term:
            phrases_model.frozen_model.phrasegrams[term] = float("inf") 
+           phrases_model.frozen_model.phrasegrams[term.lower()] = float("inf")
            phrases_model.frozen_model.phrasegrams[term.upper()] = float("inf") 
            phrases_model.frozen_model.phrasegrams[term.title()] = float("inf") 
+
     
 
 def _concatenate_phrases_in_words_to_highlight(words_to_highlight: list[str]) -> list[str]:
