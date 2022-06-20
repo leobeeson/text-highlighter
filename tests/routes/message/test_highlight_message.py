@@ -108,3 +108,59 @@ def test_message_wrong_type_expects_string(message):
     assert response.json()["detail"][0]["msg"] == "str type expected"
 
 
+def test_message_is_mandatory_field(message):
+    words_to_highlight = ["HELLO", "world"]
+    response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["msg"] == "field required"
+
+
+def test_recipient_is_mandatory_field(message):
+    message.update(text="This is a test message to test the message highlighter.")
+    message.pop("recipient_id")
+    words_to_highlight = ["HELLO", "world"]
+    response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["msg"] == "field required"
+
+
+def test_sender_is_mandatory_field(message):
+    message.update(text="This is a test message to test the message highlighter.")
+    message.pop("sender_id")
+    words_to_highlight = ["HELLO", "world"]
+    response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["msg"] == "field required"
+
+
+def test_timestamp_is_mandatory_field(message):
+    message.update(text="This is a test message to test the message highlighter.")
+    message.pop("timestamp")
+    words_to_highlight = ["HELLO", "world"]
+    response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["msg"] == "field required"
