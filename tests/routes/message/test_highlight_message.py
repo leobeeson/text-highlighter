@@ -105,12 +105,6 @@ def test_message_wrong_type_expects_string(message):
         }
     )
     assert response.status_code == 422
-    assert response.json() == {
-        "detail": [
-            {
-                "loc": ["body", "message", "text"], 
-                "msg": "str type expected", 
-                "type": "type_error.str"
-            }
-        ]
-    }
+    assert response.json()["detail"][0]["msg"] == "str type expected"
+
+
