@@ -65,3 +65,17 @@ def test_highlightable_message_with_word_to_highlight_in_upper_case():
         TextFragmentWithHighlights("Hello", is_highlighted=True),
         TextFragmentWithHighlights("World!", is_highlighted=False),
     ])
+
+
+def test_highlightable_message_with_multiple_words_to_highlight():
+    message = "This is a test message to test the message highlighter. Hello World!"
+    result = highlight_text(message, ["message", "hello"])
+    assert result == TextWithHighlights([
+        TextFragmentWithHighlights("This is a test", is_highlighted=False),
+        TextFragmentWithHighlights("message", is_highlighted=True),
+        TextFragmentWithHighlights("to test the", is_highlighted=False),
+        TextFragmentWithHighlights("message", is_highlighted=True),
+        TextFragmentWithHighlights("highlighter.", is_highlighted=False),
+        TextFragmentWithHighlights("Hello", is_highlighted=True),
+        TextFragmentWithHighlights("World!", is_highlighted=False),
+    ])
