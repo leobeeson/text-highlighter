@@ -54,44 +54,56 @@ def _create_word_highlighter(words_to_highlight: list[str]) -> Callable[[list[st
 
 
 def _highlight_words(words: list[str], words_to_highlight: list[str]) -> list[TextFragmentWithHighlights]:
-    fragments = []
+    fragments: list[TextFragmentWithHighlights] = []
     if len(words) > 0:
         if len(words_to_highlight) > 0:
-            fragment_builder = ""
-            is_fragment_highlighted = None
-            for word in words:
-                if word.lower() in words_to_highlight:
-                    if len(fragment_builder) == 0:
-                        is_fragment_highlighted = True
-                        fragment_builder = word
-                        continue
-                    if is_fragment_highlighted:
-                        fragment_builder = f"{fragment_builder} {word}"
-                        continue
-                    if not is_fragment_highlighted:
-                        fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=False)
-                        fragments.append(fragment)
-                        is_fragment_highlighted = True
-                        fragment_builder = word
-                if word.lower() not in words_to_highlight:
-                    if len(fragment_builder) == 0:
-                        is_fragment_highlighted = False
-                        fragment_builder = word
-                        continue
-                    if not is_fragment_highlighted:
-                        fragment_builder = f"{fragment_builder} {word}"
-                        continue
-                    if is_fragment_highlighted:
-                        fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=True)
-                        fragments.append(fragment)
-                        is_fragment_highlighted = False
-                        fragment_builder = word
-            if len(fragment_builder) > 0:
-                fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=is_fragment_highlighted)
-                fragments.append(fragment)
+            fragments = _build_highlightable_fragments(words, words_to_highlight)
         else:
-            fragment = TextFragmentWithHighlights(text=" ".join(words), is_highlighted=False)
-            fragments.append(fragment)
+            fragments = _build_unhighlightable_fragment(words)
+    return fragments
+
+
+def _build_highlightable_fragments(words: list[str], words_to_highlight: list[str]) -> list[TextFragmentWithHighlights]:
+    fragments: list[TextFragmentWithHighlights] = []
+    fragment_builder: str = ""
+    fragment_highlighted: bool = None
+    for word in words:
+        if word.lower() in words_to_highlight:
+            if len(fragment_builder) == 0:
+                fragment_highlighted = True
+                fragment_builder = word
+                continue
+            if fragment_highlighted:
+                fragment_builder = f"{fragment_builder} {word}"
+                continue
+            if not fragment_highlighted:
+                fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=False)
+                fragments.append(fragment)
+                fragment_highlighted = True
+                fragment_builder = word
+        if word.lower() not in words_to_highlight:
+            if len(fragment_builder) == 0:
+                fragment_highlighted = False
+                fragment_builder = word
+                continue
+            if not fragment_highlighted:
+                fragment_builder = f"{fragment_builder} {word}"
+                continue
+            if fragment_highlighted:
+                fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=True)
+                fragments.append(fragment)
+                fragment_highlighted = False
+                fragment_builder = word
+    if len(fragment_builder) > 0:
+        fragment = TextFragmentWithHighlights(text=fragment_builder, is_highlighted=fragment_highlighted)
+        fragments.append(fragment)
+    return fragments
+
+
+def _build_unhighlightable_fragment(words: list[str]) -> list[TextFragmentWithHighlights]:
+    fragments = []
+    fragment = TextFragmentWithHighlights(text=" ".join(words), is_highlighted=False)
+    fragments.append(fragment)
     return fragments
 
 
