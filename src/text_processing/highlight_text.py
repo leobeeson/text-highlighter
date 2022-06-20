@@ -37,29 +37,30 @@ class TextWithHighlights:
         ])
 
 
-def highlight_text(text: str, lowercase_words_to_highlight: list[str]) -> TextWithHighlights:
+def highlight_text(text: str, words_to_highlight: list[str]) -> TextWithHighlights:
+    words_to_highlight = _lowercase_words_to_highlight(words_to_highlight)
     fragments = flow(
         text,
         _tokenise_text,
-        _create_word_highlighter(lowercase_words_to_highlight),
+        _create_word_highlighter(words_to_highlight),
     )
     return TextWithHighlights(fragments)
 
 
-def _create_word_highlighter(lowercase_words_to_highlight: list[str]) -> Callable[[list[str]], list[TextFragmentWithHighlights]]:
+def _create_word_highlighter(words_to_highlight: list[str]) -> Callable[[list[str]], list[TextFragmentWithHighlights]]:
     def word_highlighter(words: list[str]) -> list[TextFragmentWithHighlights]:
-        return _highlight_words(words, lowercase_words_to_highlight)
+        return _highlight_words(words, words_to_highlight)
     return word_highlighter
 
 
-def _highlight_words(words: list[str], lowercase_words_to_highlight: list[str]) -> list[TextFragmentWithHighlights]:
+def _highlight_words(words: list[str], words_to_highlight: list[str]) -> list[TextFragmentWithHighlights]:
     fragments = []
     if len(words) > 0:
-        if len(lowercase_words_to_highlight) > 0:
+        if len(words_to_highlight) > 0:
             fragment_builder = ""
             is_fragment_highlighted = None
             for word in words:
-                if word.lower() in lowercase_words_to_highlight:
+                if word.lower() in words_to_highlight:
                     if len(fragment_builder) == 0:
                         is_fragment_highlighted = True
                         fragment_builder = word
@@ -72,7 +73,7 @@ def _highlight_words(words: list[str], lowercase_words_to_highlight: list[str]) 
                         fragments.append(fragment)
                         is_fragment_highlighted = True
                         fragment_builder = word
-                if word.lower() not in lowercase_words_to_highlight:
+                if word.lower() not in words_to_highlight:
                     if len(fragment_builder) == 0:
                         is_fragment_highlighted = False
                         fragment_builder = word
@@ -96,3 +97,7 @@ def _highlight_words(words: list[str], lowercase_words_to_highlight: list[str]) 
 
 def _tokenise_text(text: str) -> list[str]:
     return text.split()
+
+
+def _lowercase_words_to_highlight(words_to_highlight: list[str]) -> list[str]:
+    return [word.lower() for word in words_to_highlight]

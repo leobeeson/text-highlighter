@@ -11,7 +11,7 @@ highlight_message_router = APIRouter()
 def highlight_message(message: Message, words_to_highlight: List[str]):
     highlighted_message = highlight_text(
         text=message.text,
-        lowercase_words_to_highlight=words_to_highlight,
+        words_to_highlight=words_to_highlight,
     )
     return {
         **vars(message),
