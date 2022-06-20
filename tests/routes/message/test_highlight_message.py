@@ -92,3 +92,25 @@ def test_highlightable_message_with_word_to_highlight(message):
             }
         ]
     }
+
+
+def test_message_wrong_type_expects_string(message):
+    message.update(text=["This is a message inside a list."])
+    words_to_highlight = ["HELLO", "world"]
+    response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 422
+    assert response.json() == {
+        "detail": [
+            {
+                "loc": ["body", "message", "text"], 
+                "msg": "str type expected", 
+                "type": "type_error.str"
+            }
+        ]
+    }
