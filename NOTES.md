@@ -14,9 +14,9 @@
         * **Send an empty `list` instead of an empty `string` as message argument.**
         * **Send a blacklist `string` instead of a `list`.**
     * What scenarios could cause the arguments passed by the user/client to make the endpoint fail? 
-        * **Send blacklist argument not _lower-cased_.**
+        * **Send blacklist argument not _lower-cased_.** #DONE
         * **Send n-grams (where n > 1) as blacklist terms.**
-        * **Text with multiple spaces between words AND an actual blacklist.**
+        * **Text with multiple spaces between words AND an actual blacklist.** #DONE
     * What kind of errors can we foresee?
 
 
@@ -25,12 +25,12 @@
 
 ## WBS:
 * Implement `src/text_processing/highlight_text.py._highlight_words()` function. #TODO_1#DONE
-    * The `src.text_processing._highlight_words()` function cleans the text from any duplicated spaces, e.g. `Hello   world` becomes `Hello world`.
 * Make all existing tests for `src.text_processing.highlight_text()` pass. #TODO_1#DONE
 * Add tests to `tests/text_processing/test_highlight_text.py` that test other potential use-cases of the `highlight_text()` function. #TODO_2
-    * Enforce lower-casing of blacklist items.
-    * Handle n-grams (where n > 1) as blacklist terms.
-    * Replicate test_text_with_multiple_spaces() but with an actual blacklist.
+    * Enforce lower-casing of blacklist items. #DONE
+    * Handle n-grams (where n > 1) as blacklist terms. #FOCUS
+    * Replicate test_text_with_multiple_spaces() but with an actual blacklist. #DONE
+        * The `src.text_processing._highlight_words()` function cleans the text from any duplicated spaces, e.g. `Hello   world` becomes `Hello world`. #DONE
 * Add a suite of tests for the FastAPI route `/message/highlight`. #TODO_3
     * Add integration tests to `tests/routes/message/test_highlight_message.py`.
     * Add http exception/error-catching tests.
