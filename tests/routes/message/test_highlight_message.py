@@ -190,3 +190,16 @@ def test_words_to_highlight_is_mandatory_field(message) -> None:
     assert response.status_code == 422
     assert response.json()["detail"][0]["msg"] == "field required"
 
+
+def test_words_to_highlight_expects_list_of_strings(message) -> None:
+    message.update(text="This is a test message to test the message highlighter.")
+    words_to_highlight = "message"
+    response: Response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"][0]["msg"] == "value is not a valid list"
