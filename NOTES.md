@@ -31,9 +31,25 @@
     * Handle n-grams (where n > 1) as blacklist terms. #DONE
     * Replicate test_text_with_multiple_spaces() but with an actual blacklist. #DONE
         * The `src.text_processing._highlight_words()` function cleans the text from any duplicated spaces, e.g. `Hello   world` becomes `Hello world`. #DONE
-* Add a suite of tests for the FastAPI route `/message/highlight`. #TODO_3
-    * Add integration tests to `tests/routes/message/test_highlight_message.py`.
-    * Add http exception/error-catching tests.
+* Add a suite of tests for the FastAPI route `/message/highlight`. #TODO_3#DONE
+    * Add integration tests to `tests/routes/message/test_highlight_message.py`. #DONE
+        * Input validation tests:
+            * Message: #DONE
+                * Field missing #DONE
+                * Wrong type -> send `list[str]` #DONE
+            * Recipient: #DONE
+                * Field missing #DONE
+            * Sender: #DONE
+                * Field missing #DONE
+            * Timestamp: #DONE
+                * Field missing #DONE
+                * Is iso? #DONE
+            * Blacklist:
+                * Field missing #DONE
+                * Wrong type:
+                    * Integer #DONE
+                    * Float #DONE
+    * Add http exception/error-catching tests. #DONE
 * Update the version of the API to `0.2.0`. #TODO_4
     * The `tests/routes/test_status.py` gets the `version` variable from `src/version.py`.
     * However, `src/routes/status.py` has the version number hard-coded.
