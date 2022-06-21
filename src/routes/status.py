@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from src.version import version
 
 status_router = APIRouter()
 
@@ -7,5 +8,5 @@ status_router = APIRouter()
 def status():
     return {
         "ok": True,
-        "version": "0.1.0"
+        "version": version
     }
