@@ -1,26 +1,31 @@
 from fastapi.testclient import TestClient
 import pytest
+from requests.models import Response
 from src.app import app
-from src.models.message import Message
-from src.text_processing.highlight_text import TextFragmentWithHighlights
+
 
 client = TestClient(app)
 
 
 @pytest.fixture()
-def message():
-    message = {
+def message() -> dict:
+    message: dict = {
         "recipient_id": "test-recipient",
         "sender_id": "test-sender",
         "timestamp": "2022-06-15T11:00:00"
     }
     return message
-           
 
-def test_empty_message(message):
+
+@pytest.fixture()
+def words_to_highlight() -> list:
+    words_to_highlight: list = ["HELLO", "world", "message"]
+    return words_to_highlight
+
+
+def test_empty_message(message, words_to_highlight) -> None:
     message.update(text="")
-    words_to_highlight = ["HELLO", "world"]
-    response = client.post(
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,
@@ -34,10 +39,10 @@ def test_empty_message(message):
     }
 
 
-def test_clean_message_with_empty_words_to_highlight(message):
-    message.update(text="This is a test message to test the message highlighter.",)
+def test_clean_message_with_empty_words_to_highlight(message) -> None:
+    message.update(text="This is a test message to test the message highlighter.")
     words_to_highlight = []
-    response = client.post(
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,
@@ -56,10 +61,9 @@ def test_clean_message_with_empty_words_to_highlight(message):
     }
 
 
-def test_highlightable_message_with_word_to_highlight(message):
-    message.update(text="This is a test message to test the message highlighter.",)
-    words_to_highlight = ["message"]
-    response = client.post(
+def test_highlightable_message_with_word_to_highlight(message, words_to_highlight) -> None:
+    message.update(text="This is a test message to test the message highlighter.")
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,
@@ -94,10 +98,9 @@ def test_highlightable_message_with_word_to_highlight(message):
     }
 
 
-def test_message_wrong_type_expects_string(message):
+def test_message_wrong_type_expects_string(message, words_to_highlight) -> None:
     message.update(text=["This is a message inside a list."])
-    words_to_highlight = ["HELLO", "world"]
-    response = client.post(
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,
@@ -108,9 +111,8 @@ def test_message_wrong_type_expects_string(message):
     assert response.json()["detail"][0]["msg"] == "str type expected"
 
 
-def test_message_is_mandatory_field(message):
-    words_to_highlight = ["HELLO", "world"]
-    response = client.post(
+def test_message_is_mandatory_field(message, words_to_highlight) -> None:
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,
@@ -121,11 +123,10 @@ def test_message_is_mandatory_field(message):
     assert response.json()["detail"][0]["msg"] == "field required"
 
 
-def test_recipient_is_mandatory_field(message):
+def test_recipient_is_mandatory_field(message, words_to_highlight) -> None:
     message.update(text="This is a test message to test the message highlighter.")
     message.pop("recipient_id")
-    words_to_highlight = ["HELLO", "world"]
-    response = client.post(
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,
@@ -136,11 +137,10 @@ def test_recipient_is_mandatory_field(message):
     assert response.json()["detail"][0]["msg"] == "field required"
 
 
-def test_sender_is_mandatory_field(message):
+def test_sender_is_mandatory_field(message, words_to_highlight) -> None:
     message.update(text="This is a test message to test the message highlighter.")
     message.pop("sender_id")
-    words_to_highlight = ["HELLO", "world"]
-    response = client.post(
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,
@@ -151,11 +151,10 @@ def test_sender_is_mandatory_field(message):
     assert response.json()["detail"][0]["msg"] == "field required"
 
 
-def test_timestamp_is_mandatory_field(message):
+def test_timestamp_is_mandatory_field(message, words_to_highlight) -> None:
     message.update(text="This is a test message to test the message highlighter.")
     message.pop("timestamp")
-    words_to_highlight = ["HELLO", "world"]
-    response = client.post(
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,
@@ -166,11 +165,10 @@ def test_timestamp_is_mandatory_field(message):
     assert response.json()["detail"][0]["msg"] == "field required"
 
 
-def test_timestamp_is_datetime_compliant(message):
+def test_timestamp_is_datetime_compliant(message, words_to_highlight) -> None:
     message.update(text="This is a test message to test the message highlighter.")
     message.update(timestamp="this_is_not_a_date")
-    words_to_highlight = ["HELLO", "world"]
-    response = client.post(
+    response: Response = client.post(
         "/message/highlight",
         json={
             "message": message,

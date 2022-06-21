@@ -42,12 +42,12 @@ class TextWithHighlights:
 
 
 def highlight_text(text: str, words_to_highlight: list[str]) -> TextWithHighlights:
-    terms_to_highlight = flow(
+    terms_to_highlight: list[str] = flow(
         words_to_highlight,
         _concatenate_phrases_in_words_to_highlight,
         _lowercase_terms_to_highlight,
     )
-    fragments = flow(
+    fragments: list[TextFragmentWithHighlights] = flow(
         text,
         _tokenise_text,
         _concatenate_phrases_in_text_to_highlight,
@@ -110,7 +110,7 @@ def _build_highlightable_fragments(words: list[str], terms_to_highlight: list[st
 
 
 def _build_unhighlightable_fragment(words: list[str]) -> list[TextFragmentWithHighlights]:
-    fragments = []
+    fragments: list = []
     fragment = TextFragmentWithHighlights(text=" ".join(words), is_highlighted=False)
     fragments.append(fragment)
     return fragments
@@ -137,9 +137,8 @@ def _add_phrases_to_highlight_to_phrases_model(terms: list[str]) -> None:
            phrases_model.frozen_model.phrasegrams[term.title()] = float("inf") 
 
     
-
 def _concatenate_phrases_in_words_to_highlight(words_to_highlight: list[str]) -> list[str]:
-    terms = [word.replace(" ", "_") for word in words_to_highlight]
+    terms: list[str] = [word.replace(" ", "_") for word in words_to_highlight]
     _add_phrases_to_highlight_to_phrases_model(terms)
     return terms
 
