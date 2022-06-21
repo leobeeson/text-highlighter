@@ -32,7 +32,11 @@ def _deserialize_numbers(serialized_list: List[str]) -> List[Union[str, int, flo
         if list_element.isdigit():
             deserialized_list.append(int(list_element))
         else:
-            deserialized_list.append(list_element)
+            try:
+                float(list_element)
+                deserialized_list.append(float(list_element))
+            except ValueError:
+                deserialized_list.append(list_element)
     return deserialized_list
 
 
