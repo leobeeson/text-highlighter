@@ -205,9 +205,23 @@ def test_words_to_highlight_expects_list(message) -> None:
     assert response.json()["detail"][0]["msg"] == "value is not a valid list"
 
 
-def test_words_to_highlight_expects_list_of_strings(message) -> None:
+def test_words_to_highlight_does_not_accept_integers(message) -> None:
     message.update(text="This is a test message to test the message highlighter.")
     words_to_highlight = ["message", 19]
+    response: Response = client.post(
+        "/message/highlight",
+        json={
+            "message": message,
+            "words_to_highlight": words_to_highlight,
+        }
+    )
+    assert response.status_code == 422
+    assert response.json()["detail"] == "words to highlight can't be integers"
+
+
+def test_words_to_highlight_does_not_accept_floats(message) -> None:
+    message.update(text="This is a test message to test the message highlighter.")
+    words_to_highlight = ["message", 19.0]
     response: Response = client.post(
         "/message/highlight",
         json={
